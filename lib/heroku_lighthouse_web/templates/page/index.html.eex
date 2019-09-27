@@ -1,0 +1,11 @@
+<section class="row">
+  <article class="column">
+    <%= if @access_token do %>
+      <%= link "Sign out", to: "/" %>
+
+      <%= link "Sign in with Heroku (REMOVE THIS)", to: "https://id.heroku.com/oauth/authorize?client_id=94405156-0a36-487e-ba56-92349207a72e&response_type=code&scope=read&state=123-qwe", class: "btn" %>
+    <% else %>
+      <%= link "Sign in with Heroku", to: "https://id.heroku.com/oauth/authorize?client_id=94405156-0a36-487e-ba56-92349207a72e&response_type=code&scope=read&state=123-qwe", class: "btn" %>
+    <% end %>
+  </article>
+</section>
