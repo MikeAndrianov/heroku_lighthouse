@@ -2,6 +2,7 @@ defmodule HerokuLighthouse.HerokuApi.Oauth do
   use HTTPoison.Base
 
   @base_url "https://id.heroku.com"
+  @client_secret "c7fd8800-2842-4ca4-b11d-ba8556fa7af4" # TODO: move to .env
 
   def process_request_url(url) do
     @base_url <> url
@@ -22,8 +23,7 @@ defmodule HerokuLighthouse.HerokuApi.Oauth do
     post_params = [
       grant_type: "authorization_code",
       code: code,
-      # TODO: move to .env
-      client_secret: "c7fd8800-2842-4ca4-b11d-ba8556fa7af4"
+      client_secret: @client_secret
     ]
 
     __MODULE__.post!(
@@ -33,5 +33,17 @@ defmodule HerokuLighthouse.HerokuApi.Oauth do
     ).body
   end
 
-  # TODO: https://devcenter.heroku.com/articles/oauth#token-refresh
+  def token_refresh(refresh_token) do
+    post_params = [
+      grant_type: "refresh_token",
+      refresh_token: refresh_token,
+      client_secret: @client_secret
+    ]
+
+    __MODULE__.post!(
+      "/oauth/token",
+      URI.encode_query(post_params),
+      %{"Content-Type" => "application/x-www-form-urlencoded"}
+    ).body
+  end
 end

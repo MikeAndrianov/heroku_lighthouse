@@ -63,6 +63,10 @@ defmodule HerokuLighthouse.HerokuApi.Client do
     __MODULE__.get!("/teams/#{team_name_or_id}/apps", headers(auth_token)).body
   end
 
+  def app_list(auth_token) do
+    __MODULE__.get!("/apps", headers(auth_token)).body
+  end
+
   # TODO: check response status. Can be forbidden on not found.
   def get_domains_for_app(auth_token, app_id_or_name) do
     __MODULE__.get!("/apps/#{app_id_or_name}/domains", headers(auth_token)).body
