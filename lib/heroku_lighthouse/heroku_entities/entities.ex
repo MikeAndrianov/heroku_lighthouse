@@ -11,22 +11,49 @@ defmodule HerokuLighthouse.HerokuEntities.Entities do
     |> Client.get_teams()
   end
 
-  # def list_apps(user) do
-  #   user
-  #   |> list_teams
-  #   |> Enum.flat_map(&Client.team_app_list_by_team(Accounts.access_token(user), &1["id"]))
-  # end
-
   # %{ team_name: [apps], ...}
   def grouped_apps(user) do
-    #TODO: add personal
     user
     |> list_teams
-    |> Map.new(fn team ->
-      {team["name"], Client.team_app_list_by_team(Accounts.access_token(user), team["id"])}
-    end)
+    |> fetch_apps_for_teams(user)
     |> Map.put(%{"name" => "Personal"}, personal_apps(user))
-    # |> Enum.reject(fn({_, apps}) -> length(apps) == 0 end)
+    |> Enum.reject(fn {_, apps} -> length(apps) == 0 end)
+    |> Enum.map(fn {team, apps} -> {team, put_domains_to_apps(apps, user)} end)
+  end
+
+  defp fetch_apps_for_teams(teams, user) do
+    Map.new(teams, fn team ->
+      {team["name"], team_apps(team, user)}
+    end)
+  end
+
+  defp team_apps_with_domains(team, user) do
+    team
+    |> team_apps(user)
+    |> Enum.map(fn app -> Map.put(app, "domains", app_domains(app, user)) end)
+  end
+
+  defp team_apps(team, user) do
+    user
+    |> Accounts.access_token()
+    |> Client.team_app_list_by_team(team["id"])
+  end
+
+  defp put_domains_to_apps(apps, user) do
+    apps
+    |> Enum.map(&(Map.put(&1, "domains", app_domains(&1, user))))
+  end
+
+  defp app_domains(app, user) do
+    response = user
+              |> Accounts.access_token()
+              |> Client.get_domains_for_app(app["id"])
+
+    if is_map(response) do
+      ["No access"]
+    else
+      Enum.map(response, fn domain -> domain["hostname"] end)
+    end
   end
 
   defp personal_apps(user) do

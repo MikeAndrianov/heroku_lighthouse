@@ -1,7 +1,5 @@
-<h1> Dashboard </h1>
-
 <%= for {team, apps} <- @apps_by_team do %>
-  <h4><%= team["name"] %></h4>
+  <h2><%= team["name"] %></h4>
 
   <table>
     <thead>
@@ -9,18 +7,24 @@
         <th>Name</th>
         <th>Web URL</th>
         <th>Domains</th>
-        <th>Github URL</th>
+        <%# <th>Github URL</th> %>
       </tr>
     </thead>
     <tbody>
       <%= for app <- apps do %>
         <tr>
           <td><%= link app["name"], to: "https://dashboard.heroku.com/apps/#{app["name"]}" %></td>
-          <td><%= app["web_url"] %></td>
-          <td><%#= get_domains(@conn, app["name"]) %></td>
-          <td><%= %></td>
+          <td><%= link app["web_url"], to: app["web_url"] %></td>
+          <td>
+            <%= for domain <- app["domains"] do %>
+              <div><%= domain %></div>
+            <% end %>
+          </td>
         </tr>
       <% end %>
     </tbody>
   </table>
+
+  <br>
+  <br>
 <% end %>
