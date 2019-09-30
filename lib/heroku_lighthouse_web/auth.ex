@@ -1,5 +1,7 @@
 defmodule HerokuLighthouseWeb.Auth do
   import Plug.Conn
+  import Phoenix.Controller
+  alias HerokuLighthouse.Accounts
 
   def init(opts) do
     opts
@@ -11,7 +13,7 @@ defmodule HerokuLighthouseWeb.Auth do
     cond do
       user = conn.assigns[:current_user] ->
         put_current_user(conn, user)
-      user = user_id && HerokuLighthouse.Accounts.get_user!(user_id) ->
+      user = user_id && Accounts.get_user!(user_id) ->
         put_current_user(conn, user)
       true ->
         assign(conn, :current_user, nil)
@@ -26,7 +28,19 @@ defmodule HerokuLighthouseWeb.Auth do
   end
 
   def logout(conn) do
-    configure_session(conn, drop: true)
+    conn
+    |> configure_session(drop: true)
+  end
+
+  def authenticate_user(conn, _opts) do
+    if conn.assigns.current_user do
+      conn
+    else
+      conn
+      |> put_flash(:error, "You must be logged in to access that page")
+      |> redirect(to: HerokuLighthouseWeb.Router.Helpers.page_path(conn, :index))
+      |> halt()
+    end
   end
 
   defp put_current_user(conn, user) do

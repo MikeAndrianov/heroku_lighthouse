@@ -1,11 +1,9 @@
 defmodule HerokuLighthouseWeb.PageController do
   use HerokuLighthouseWeb, :controller
-  alias HerokuLighthouse.HerokuApi.{Client, Oauth}
+  alias HerokuLighthouse.HerokuApi.Oauth
 
   def index(conn, _params) do
-    # TODO: fix this. move to plug
-    token = get_session(conn, :access_token) || conn.assigns[:access_token]
-    render(conn, "index.html", access_token: token)
+    render(conn, "index.html")
   end
 
   def callback(conn, %{"code" => code, "state" => anti_forgery_token}) do

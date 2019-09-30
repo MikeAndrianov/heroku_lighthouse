@@ -14,7 +14,7 @@ defmodule HerokuLighthouse.Accounts do
       account_attributes <- Client.get_account(token_response["access_token"]) do
         Multi.new
         |> Multi.run(:user, fn(_repo, _changes) -> find_or_create_user(account_attributes) end)
-        |> Multi.run(:token, fn(_repo, %{user: user}) -> create_token(user, token_response) end)
+        |> Multi.run(:token, fn(_repo, %{user: user}) -> create_or_update_token(user, token_response) end)
         |> Repo.transaction
     end
   end
@@ -40,21 +40,24 @@ defmodule HerokuLighthouse.Accounts do
 
   def get_token!(user), do: user.token
 
-  def create_token(user, attrs \\ %{}) do
-    user
-    |> Ecto.build_assoc(:token)
-    |> Token.changeset(attrs)
-    |> Repo.insert()
+  def create_or_update_token(user, attrs \\ %{}) do
+    case token = Repo.get_by(Token, user_id: user.id) do
+      %Token{} ->
+        token
+        |> Token.changeset(attrs)
+        |> Repo.update()
+      nil ->
+        user
+        |> Ecto.build_assoc(:token)
+        |> Token.changeset(attrs)
+        |> Repo.insert()
+    end
   end
 
   def update_token(token, attrs) do
     token
     |> Token.refresh_token_changeset(attrs)
     |> Repo.update!()
-  end
-
-  def delete_token(%Token{} = token) do
-    Repo.delete(token)
   end
 
   def access_token(%User{id: user_id}) do

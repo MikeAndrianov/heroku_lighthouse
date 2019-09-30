@@ -8,6 +8,7 @@ defmodule HerokuLighthouse.HerokuApi.Oauth do
     @base_url <> url
   end
 
+  def process_response_body(""), do: ""
   def process_response_body(body), do: Poison.decode!(body)
 
   # https://devcenter.heroku.com/articles/oauth

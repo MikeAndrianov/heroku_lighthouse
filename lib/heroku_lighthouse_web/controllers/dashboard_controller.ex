@@ -7,7 +7,6 @@ defmodule HerokuLighthouseWeb.DashboardController do
           [conn, conn.params, conn.assigns.current_user])
   end
 
-  # TODO: make it only for logged in users
   # TODO: add apps to favorites and sort them in first order, show apps without access at the end
   # TODO: add search by heroku app name, github name or domain in my search. Possibly with LiveView
   def index(conn, _params, user) do

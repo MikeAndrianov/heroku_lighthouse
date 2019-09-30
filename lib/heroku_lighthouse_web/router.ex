@@ -19,6 +19,12 @@ defmodule HerokuLighthouseWeb.Router do
 
     get "/", PageController, :index
     get "/auth/callback", AuthController, :index
+  end
+
+  scope "/", HerokuLighthouseWeb do
+    pipe_through [:browser, :authenticate_user]
+
+    delete "/logout", AuthController, :destroy
     get "/dashboard", DashboardController, :index
   end
 

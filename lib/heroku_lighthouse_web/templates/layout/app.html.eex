@@ -14,7 +14,7 @@
           <nav role="navigation">
             <ul>
               <li>
-                <%= link "Sign out", to: "/" %>
+                <%= link "Sign out", to: HerokuLighthouseWeb.Router.Helpers.auth_path(@conn, :destroy), method: "delete" %>
               </li>
             </ul>
           </nav>

@@ -22,9 +22,7 @@ defmodule HerokuLighthouse.HerokuEntities.Entities do
   end
 
   defp fetch_apps_for_teams(teams, user) do
-    Map.new(teams, fn team ->
-      {team["name"], team_apps(team, user)}
-    end)
+    Map.new(teams, fn team -> {team, team_apps(team, user)} end)
   end
 
   defp team_apps_with_domains(team, user) do
@@ -56,9 +54,11 @@ defmodule HerokuLighthouse.HerokuEntities.Entities do
     end
   end
 
+  # TODO: personal also include shared by team apps. remove them from personal
   defp personal_apps(user) do
     user
     |> Accounts.access_token()
     |> Client.app_list()
+    |> Enum.reject(&(&1["team"]))
   end
 end

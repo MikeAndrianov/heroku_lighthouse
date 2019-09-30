@@ -1,11 +1,31 @@
 <section class="row">
   <article class="column">
-    <%= if @current_user do %>
-      <%= link "Sign out", to: "/" %>
+    <h1 class="horizontal-centering"> Heroku Lighthouse </h1>
+    <p class="horizontal-centering">Find necessary Heroku application by it's domain. Just in one click.</p>
 
-      <%= link "Sign in with Heroku (REMOVE THIS)", to: "https://id.heroku.com/oauth/authorize?client_id=94405156-0a36-487e-ba56-92349207a72e&response_type=code&scope=read&state=123-qwe", class: "btn" %>
-    <% else %>
-      <%= link "Sign in with Heroku", to: "https://id.heroku.com/oauth/authorize?client_id=94405156-0a36-487e-ba56-92349207a72e&response_type=code&scope=read&state=123-qwe", class: "btn" %>
-    <% end %>
+    <br>
+    <div class="horizontal-centering">
+      <%= sign_in_link(@conn) %>
+    </div>
+    <br> <br> <br>
+
+    <div class="row">
+      <div class="column">
+        <h2>Secure</h2>
+        <div>
+          Only read access through OAuth. Account information and configuration variables will be hidden from this application.
+        </div>
+      </div>
+
+      <div class="column">
+        <h2>Good for microservices</h2>
+        <div>No need to remember which domain belongs to which application.</div>
+      </div>
+
+      <div class="column">
+        <h2>Minimalistic</h2>
+        <div>Easy to use.</div>
+      </div>
+    </div>
   </article>
 </section>
