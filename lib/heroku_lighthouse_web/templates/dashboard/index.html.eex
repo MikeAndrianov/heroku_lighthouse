@@ -17,7 +17,16 @@
           <td><%= link app["web_url"], to: app["web_url"] %></td>
           <td>
             <%= for domain <- app["domains"] do %>
-              <div><%= domain %></div>
+              <div>
+                <%= if domain == "No access" do %>
+                  <div class="tooltip">
+                    <%= domain %>
+                    <span class="tooltiptext">You don't have enough permissions to view custom domains</span>
+                  </div>
+                <% else %>
+                  <%= domain %>
+                <% end %>
+              </div>
             <% end %>
           </td>
         </tr>
