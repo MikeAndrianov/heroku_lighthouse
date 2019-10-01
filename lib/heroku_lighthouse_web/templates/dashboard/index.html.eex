@@ -1,5 +1,5 @@
 <%= for {team, apps} <- @apps_by_team do %>
-  <h2><%= team["name"] %></h4>
+  <h2><%= team.name %></h4>
 
   <table>
     <thead>
@@ -13,10 +13,10 @@
     <tbody>
       <%= for app <- apps do %>
         <tr>
-          <td><%= link app["name"], to: "https://dashboard.heroku.com/apps/#{app["name"]}" %></td>
-          <td><%= link app["web_url"], to: app["web_url"] %></td>
+          <td><%= link app.name, to: "https://dashboard.heroku.com/apps/#{app.name}" %></td>
+          <td><%= link app.web_url, to: app.web_url %></td>
           <td>
-            <%= for domain <- app["domains"] do %>
+            <%= for domain <- app.domains do %>
               <div>
                 <%= if domain == "No access" do %>
                   <div class="tooltip">
