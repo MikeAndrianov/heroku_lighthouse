@@ -11,9 +11,10 @@ defmodule HerokuLighthouse.Application do
       # Start the Ecto repository
       HerokuLighthouse.Repo,
       # Start the endpoint when the application starts
-      HerokuLighthouseWeb.Endpoint
+      HerokuLighthouseWeb.Endpoint,
       # Starts a worker by calling: HerokuLighthouse.Worker.start_link(arg)
       # {HerokuLighthouse.Worker, arg},
+      {Cachex, :cache_warehouse}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

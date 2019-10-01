@@ -11,12 +11,23 @@ defmodule HerokuLighthouse.HerokuEntities.Entities do
     |> Client.get_teams()
   end
 
+  def cached_grouped_apps(user) do
+    Cachex.get!(:cache_warehouse, "user_#{user.id}_apps") || fetch_and_cache_apps(user)
+  end
+
+  defp fetch_and_cache_apps(user) do
+    with cached_apps <- grouped_apps(user),
+      true <- Cachex.put!(:cache_warehouse, "user_#{user.id}_apps", cached_apps, ttl: :timer.hours(24)) do
+        cached_apps
+    end
+  end
+
   # %{ team_name: [apps], ...}
   def grouped_apps(user) do
     user
     |> list_teams
     |> fetch_apps_for_teams(user)
-    |> Map.put(%{"name" => "Personal"}, personal_apps(user))
+    |> Map.put(%{name: "Personal"}, personal_apps(user))
     |> Enum.reject(fn {_, apps} -> length(apps) == 0 end)
     |> Enum.map(fn {team, apps} -> {team, put_domains_to_apps(apps, user)} end)
   end
@@ -28,30 +39,25 @@ defmodule HerokuLighthouse.HerokuEntities.Entities do
   defp team_apps_with_domains(team, user) do
     team
     |> team_apps(user)
-    |> Enum.map(fn app -> Map.put(app, "domains", app_domains(app, user)) end)
+    |> Enum.map(fn app -> Map.put(app, :domains, app_domains(app, user)) end)
   end
 
   defp team_apps(team, user) do
     user
     |> Accounts.access_token()
-    |> Client.team_app_list_by_team(team["id"])
+    |> Client.team_app_list_by_team(team.id)
   end
 
   defp put_domains_to_apps(apps, user) do
     apps
-    |> Enum.map(&(Map.put(&1, "domains", app_domains(&1, user))))
+    |> Enum.map(&(Map.put(&1, :domains, app_domains(&1, user))))
   end
 
   defp app_domains(app, user) do
-    response = user
-              |> Accounts.access_token()
-              |> Client.get_domains_for_app(app["id"])
-
-    if is_map(response) do
-      ["No access"]
-    else
-      Enum.map(response, fn domain -> domain["hostname"] end)
-    end
+    user
+    |> Accounts.access_token()
+    |> Client.get_domains_for_app(app.id)
+    |> Enum.map(&(&1.hostname))
   end
 
   # TODO: personal also include shared by team apps. remove them from personal
@@ -59,6 +65,6 @@ defmodule HerokuLighthouse.HerokuEntities.Entities do
     user
     |> Accounts.access_token()
     |> Client.app_list()
-    |> Enum.reject(&(&1["team"]))
+    |> Enum.reject(&(&1.team))
   end
 end
