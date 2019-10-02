@@ -65,8 +65,16 @@ defmodule HerokuLighthouse.AccountsTest do
   describe "tokens" do
     alias HerokuLighthouse.Accounts.Token
 
-    @valid_attrs %{access_token: "some access_token", expires_in: 42, refresh_token: "some refresh_token"}
-    @update_attrs %{access_token: "some updated access_token", expires_in: 43, refresh_token: "some updated refresh_token"}
+    @valid_attrs %{
+      access_token: "some access_token",
+      expires_in: 42,
+      refresh_token: "some refresh_token"
+    }
+    @update_attrs %{
+      access_token: "some updated access_token",
+      expires_in: 43,
+      refresh_token: "some updated refresh_token"
+    }
     @invalid_attrs %{access_token: nil, expires_in: nil, refresh_token: nil}
 
     def token_fixture(attrs \\ %{}) do

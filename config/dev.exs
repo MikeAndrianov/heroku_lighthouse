@@ -52,7 +52,8 @@ config :heroku_lighthouse, HerokuLighthouseWeb.Endpoint,
       ~r{priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$},
       ~r{priv/gettext/.*(po)$},
       ~r{lib/heroku_lighthouse_web/views/.*(ex)$},
-      ~r{lib/heroku_lighthouse_web/templates/.*(eex)$}
+      ~r{lib/heroku_lighthouse_web/templates/.*(eex)$},
+      ~r{lib/heroku_lighthouse_web/live/.*(ex)$}
     ]
   ]
 

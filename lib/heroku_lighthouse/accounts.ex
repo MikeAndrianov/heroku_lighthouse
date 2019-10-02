@@ -11,11 +11,13 @@ defmodule HerokuLighthouse.Accounts do
 
   def fetch_token_and_account(heroku_callback_code) do
     with token_response <- Oauth.fetch_token(heroku_callback_code),
-      account_attributes <- Client.get_account(token_response["access_token"]) do
-        Multi.new
-        |> Multi.run(:user, fn(_repo, _changes) -> find_or_create_user(account_attributes) end)
-        |> Multi.run(:token, fn(_repo, %{user: user}) -> create_or_update_token(user, token_response) end)
-        |> Repo.transaction
+         account_attributes <- Client.get_account(token_response["access_token"]) do
+      Multi.new()
+      |> Multi.run(:user, fn _repo, _changes -> find_or_create_user(account_attributes) end)
+      |> Multi.run(:token, fn _repo, %{user: user} ->
+        create_or_update_token(user, token_response)
+      end)
+      |> Repo.transaction()
     end
   end
 
@@ -23,6 +25,7 @@ defmodule HerokuLighthouse.Accounts do
     cond do
       user = Repo.get_by(User, email: email) ->
         {:ok, user}
+
       true ->
         create_user(attrs)
     end
@@ -46,6 +49,7 @@ defmodule HerokuLighthouse.Accounts do
         token
         |> Token.changeset(attrs)
         |> Repo.update()
+
       nil ->
         user
         |> Ecto.build_assoc(:token)

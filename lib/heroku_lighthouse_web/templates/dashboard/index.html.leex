@@ -1,3 +1,7 @@
+<form phx-change="search" phx-debounce="20000" class="search-form">
+  <%= text_input :search_field, :query, placeholder: "Search for application name, web url or custom domain" %>
+</form>
+
 <%= for {team, apps} <- @apps_by_team do %>
   <h2><%= team.name %></h4>
 

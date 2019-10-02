@@ -45,7 +45,9 @@ defmodule HerokuLighthouse.MixProject do
       {:plug_cowboy, "~> 2.0"},
       {:httpoison, "~> 1.5"},
       {:poison, "~> 3.1"},
-      {:cachex, "~> 3.2"}
+      {:cachex, "~> 3.2"},
+      {:phoenix_live_view, "~> 0.3.0"},
+      {:floki, ">= 0.0.0", only: :test}
     ]
   end
 

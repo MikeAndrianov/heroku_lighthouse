@@ -10,6 +10,7 @@ defmodule HerokuLighthouseWeb.AuthController do
         conn
         |> put_session(:user_id, user.id)
         |> redirect(to: Routes.dashboard_path(conn, :index))
+
       {:error, _} ->
         conn
         |> put_flash(:warn, gettext("Something went wrong"))

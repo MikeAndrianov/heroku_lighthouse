@@ -15,7 +15,10 @@ config :heroku_lighthouse, HerokuLighthouseWeb.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "cip95rSP7QmfqOZRUXlbxC2leQ9GKgvLgityYEhy8aYMgmYspVY61q3MjKF6mvSy",
   render_errors: [view: HerokuLighthouseWeb.ErrorView, accepts: ~w(html json)],
-  pubsub: [name: HerokuLighthouse.PubSub, adapter: Phoenix.PubSub.PG2]
+  pubsub: [name: HerokuLighthouse.PubSub, adapter: Phoenix.PubSub.PG2],
+  live_view: [
+    signing_salt: "2kwyOPdJvhZBzGGWhZ/mGyosWKhHWd7Y"
+  ]
 
 # Configures Elixir's Logger
 config :logger, :console,
@@ -25,8 +28,7 @@ config :logger, :console,
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
 
-config :app, HerokuLighthouse.Repo,
-  migration_timestamps: [type: :utc_datetime]
+config :app, HerokuLighthouse.Repo, migration_timestamps: [type: :utc_datetime]
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

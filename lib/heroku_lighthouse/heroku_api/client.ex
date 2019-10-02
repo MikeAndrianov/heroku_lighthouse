@@ -33,8 +33,10 @@ defmodule HerokuLighthouse.HerokuApi.Client do
     case get!("/apps/#{app_id_or_name}/domains", headers(auth_token)) do
       %{status_code: 403} ->
         [%Domain{hostname: "No access"}]
+
       %{status_code: 404} ->
         [%Domain{hostname: "No access"}]
+
       response ->
         Poison.decode!(response.body, as: [%Domain{}])
     end

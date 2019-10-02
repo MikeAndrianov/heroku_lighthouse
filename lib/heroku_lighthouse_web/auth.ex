@@ -13,8 +13,10 @@ defmodule HerokuLighthouseWeb.Auth do
     cond do
       user = conn.assigns[:current_user] ->
         put_current_user(conn, user)
+
       user = user_id && Accounts.get_user!(user_id) ->
         put_current_user(conn, user)
+
       true ->
         assign(conn, :current_user, nil)
     end

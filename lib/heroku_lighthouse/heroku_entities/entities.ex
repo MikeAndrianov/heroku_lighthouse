@@ -15,10 +15,23 @@ defmodule HerokuLighthouse.HerokuEntities.Entities do
     Cachex.get!(:cache_warehouse, "user_#{user.id}_apps") || fetch_and_cache_apps(user)
   end
 
+  def filter_grouped_apps(user, ""), do: cached_grouped_apps(user)
+
+  def filter_grouped_apps(user, query) do
+    cached_grouped_apps(user)
+    |> Enum.reduce([], fn {team, apps}, acc ->
+      [{team, filter_apps(apps, query)} | acc]
+    end)
+    |> Enum.reject(fn {_, apps} -> length(apps) == 0 end)
+  end
+
   defp fetch_and_cache_apps(user) do
     with cached_apps <- grouped_apps(user),
-      true <- Cachex.put!(:cache_warehouse, "user_#{user.id}_apps", cached_apps, ttl: :timer.hours(24)) do
-        cached_apps
+         true <-
+           Cachex.put!(:cache_warehouse, "user_#{user.id}_apps", cached_apps,
+             ttl: :timer.hours(24)
+           ) do
+      cached_apps
     end
   end
 
@@ -50,14 +63,14 @@ defmodule HerokuLighthouse.HerokuEntities.Entities do
 
   defp put_domains_to_apps(apps, user) do
     apps
-    |> Enum.map(&(Map.put(&1, :domains, app_domains(&1, user))))
+    |> Enum.map(&Map.put(&1, :domains, app_domains(&1, user)))
   end
 
   defp app_domains(app, user) do
     user
     |> Accounts.access_token()
     |> Client.get_domains_for_app(app.id)
-    |> Enum.map(&(&1.hostname))
+    |> Enum.map(& &1.hostname)
   end
 
   # TODO: personal also include shared by team apps. remove them from personal
@@ -65,6 +78,14 @@ defmodule HerokuLighthouse.HerokuEntities.Entities do
     user
     |> Accounts.access_token()
     |> Client.app_list()
-    |> Enum.reject(&(&1.team))
+    |> Enum.reject(& &1.team)
+  end
+
+  defp filter_apps(apps, query) do
+    apps
+    |> Enum.filter(
+      &(&1.name =~ query || &1.web_url =~ query ||
+          Enum.any?(&1.domains, fn domain -> domain =~ query end))
+    )
   end
 end

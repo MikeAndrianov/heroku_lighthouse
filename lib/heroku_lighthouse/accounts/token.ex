@@ -4,7 +4,8 @@ defmodule HerokuLighthouse.Accounts.Token do
 
   schema "tokens" do
     field :access_token, :string
-    field :expires_in, :integer # in seconds
+    # in seconds
+    field :expires_in, :integer
     field :refresh_token, :string
 
     belongs_to :user, HerokuLighthouse.Accounts.User
@@ -29,7 +30,7 @@ defmodule HerokuLighthouse.Accounts.Token do
     # in case when other field than access_token, this logic could be broken
     token.updated_at
     |> DateTime.add(token.expires_in)
-    |> DateTime.compare(DateTime.utc_now)
+    |> DateTime.compare(DateTime.utc_now())
     |> (&(&1 != :gt)).()
   end
 end
