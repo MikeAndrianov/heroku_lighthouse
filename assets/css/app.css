@@ -6,6 +6,10 @@
   max-width: 120rem;
 }
 
+.header-fetching-apps {
+  margin: 10rem auto;
+}
+
 .search-form {
   margin-bottom: 2rem;
 }
