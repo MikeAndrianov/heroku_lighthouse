@@ -12,8 +12,10 @@ defmodule HerokuLighthouse.HerokuEntities.Entities do
   end
 
   def cached_grouped_apps(user) do
-    Cachex.get!(:cache_warehouse, "user_#{user.id}_apps") || fetch_and_cache_apps(user)
+    Cachex.get!(:cache_warehouse, user_applications_cache_name(user)) || fetch_apps_async(user)
   end
+
+  def user_applications_cache_name(user), do: "user_#{user.id}_apps"
 
   def filter_grouped_apps(user, ""), do: cached_grouped_apps(user)
 
@@ -23,6 +25,18 @@ defmodule HerokuLighthouse.HerokuEntities.Entities do
       [{team, filter_apps(apps, query)} | acc]
     end)
     |> Enum.reject(fn {_, apps} -> length(apps) == 0 end)
+  end
+
+  defp fetch_apps_async(user) do
+    # If you are using async tasks, you must await a reply as they are always sent.
+    # Use Task.start_link if you are not expecting a reply
+    Task.start_link(fn ->
+      fetch_and_cache_apps(user)
+
+      Phoenix.PubSub.broadcast(HerokuLighthouse.PubSub, "dashboard:#{user.id}", :apps_fetched)
+    end)
+
+    []
   end
 
   defp fetch_and_cache_apps(user) do
@@ -49,6 +63,7 @@ defmodule HerokuLighthouse.HerokuEntities.Entities do
     Map.new(teams, fn team -> {team, team_apps(team, user)} end)
   end
 
+  # TODO: try to make it parallel with Stream
   defp team_apps_with_domains(team, user) do
     team
     |> team_apps(user)
@@ -63,7 +78,10 @@ defmodule HerokuLighthouse.HerokuEntities.Entities do
 
   defp put_domains_to_apps(apps, user) do
     apps
-    |> Enum.map(&Map.put(&1, :domains, app_domains(&1, user)))
+    |> Task.async_stream(&({&1, app_domains(&1, user)}), ordered: true)
+    |> Enum.reduce([], fn({:ok, {app, app_domains}}, acc) -> [Map.put(app, :domains, app_domains) | acc] end)
+    |> Enum.reverse()
+    # |> Enum.map(&Map.put(&1, :domains, app_domains(&1, user)))
   end
 
   defp app_domains(app, user) do
