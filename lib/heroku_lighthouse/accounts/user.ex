@@ -3,6 +3,8 @@ defmodule HerokuLighthouse.Accounts.User do
   import Ecto.Changeset
   alias HerokuLighthouse.Accounts.Token
 
+  # TODO: add last seen or even schedule with all interraction.
+  # Keep cache for most active users
   schema "users" do
     field :email, :string
 

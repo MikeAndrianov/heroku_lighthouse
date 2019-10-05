@@ -1,7 +1,7 @@
 <section class="row">
   <article class="column">
     <h1 class="horizontal-centering"> Heroku Lighthouse </h1>
-    <p class="horizontal-centering">Find necessary Heroku application by it's domain. Just in one click.</p>
+    <p class="horizontal-centering">Find necessary Heroku application by it's domain or domain by application. Just in one click.</p>
 
     <br>
     <div class="horizontal-centering">
@@ -24,7 +24,7 @@
 
       <div class="column">
         <h2>Minimalistic</h2>
-        <div>Easy to use.</div>
+        <div>Only necessary information.</div>
       </div>
     </div>
   </article>
