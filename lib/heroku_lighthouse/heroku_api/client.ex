@@ -1,7 +1,7 @@
 defmodule HerokuLighthouse.HerokuApi.Client do
   use HTTPoison.Base
 
-  alias HerokuLighthouse.HerokuEntities.{Application, Domain, Team}
+  alias HerokuLighthouse.Dashboard.{Application, Domain, Team}
 
   # https://devcenter.heroku.com/articles/platform-api-reference
 

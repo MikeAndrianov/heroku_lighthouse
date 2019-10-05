@@ -2,7 +2,7 @@ defmodule HerokuLighthouseWeb.Auth do
   import Plug.Conn
   import Phoenix.Controller
   alias HerokuLighthouse.Accounts
-  alias HerokuLighthouse.Entities
+  alias HerokuLighthouse.Dashboard
 
   def init(opts) do
     opts
@@ -31,7 +31,7 @@ defmodule HerokuLighthouseWeb.Auth do
   end
 
   def logout(conn) do
-    cache_key = Entities.user_applications_cache_name(conn.assigns.current_user)
+    cache_key = Dashboard.user_applications_cache_name(conn.assigns.current_user)
     Cachex.del(:cache_warehouse, cache_key)
 
     conn

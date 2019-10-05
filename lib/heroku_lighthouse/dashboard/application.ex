@@ -1,4 +1,4 @@
-defmodule HerokuLighthouse.HerokuEntities.Application do
+defmodule HerokuLighthouse.Dashboard.Application do
   # %{
   #   "acm" => true,
   #   "archived_at" => nil,

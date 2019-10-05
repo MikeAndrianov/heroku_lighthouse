@@ -1,4 +1,4 @@
-defmodule HerokuLighthouse.HerokuEntities.Entities do
+defmodule HerokuLighthouse.Dashboard do
   import Ecto.Query, warn: false
   alias HerokuLighthouse.Repo
   alias HerokuLighthouse.HerokuApi.Client

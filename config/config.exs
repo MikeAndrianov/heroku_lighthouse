@@ -28,7 +28,7 @@ config :logger, :console,
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
 
-config :app, HerokuLighthouse.Repo, migration_timestamps: [type: :utc_datetime]
+config :heroku_lighthouse, HerokuLighthouse.Repo, migration_timestamps: [type: :utc_datetime]
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

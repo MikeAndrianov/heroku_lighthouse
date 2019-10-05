@@ -1,6 +1,6 @@
 defmodule HerokuLighthouseWeb.DashboardController do
   use HerokuLighthouseWeb, :controller
-  alias HerokuLighthouse.HerokuEntities.Entities
+  alias HerokuLighthouse.Dashboard
   alias Phoenix.LiveView
   alias HerokuLighthouseWeb.DashboardLive.Index
 

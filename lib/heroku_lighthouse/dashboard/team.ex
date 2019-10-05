@@ -1,4 +1,4 @@
-defmodule HerokuLighthouse.HerokuEntities.Team do
+defmodule HerokuLighthouse.Dashboard.Team do
   # {
   #   "id": "01234567-89ab-cdef-0123-456789abcdef",
   #   "created_at": "2012-01-01T12:00:00Z",
