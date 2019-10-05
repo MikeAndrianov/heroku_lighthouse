@@ -2,8 +2,7 @@ defmodule HerokuLighthouse.HerokuApi.Oauth do
   use HTTPoison.Base
 
   @base_url "https://id.heroku.com"
-  # TODO: move to .env
-  @client_secret "c7fd8800-2842-4ca4-b11d-ba8556fa7af4"
+  @client_secret System.get_env("HEROKU_CLIENT_SECRET")
 
   def process_request_url(url) do
     @base_url <> url
