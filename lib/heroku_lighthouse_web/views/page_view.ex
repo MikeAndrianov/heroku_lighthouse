@@ -1,5 +1,6 @@
 defmodule HerokuLighthouseWeb.PageView do
   use HerokuLighthouseWeb, :view
+  alias HerokuLighthouse.HerokuApi.Oauth
 
   def sign_in_link(conn) do
     if conn.assigns.current_user do
@@ -10,7 +11,7 @@ defmodule HerokuLighthouseWeb.PageView do
     else
       link("Sign in with Heroku",
         to:
-          "https://id.heroku.com/oauth/authorize?client_id=94405156-0a36-487e-ba56-92349207a72e&response_type=code&scope=read&state=#{
+          "https://id.heroku.com/oauth/authorize?client_id=#{System.get_env("HEROKU_CLIENT_ID")}&response_type=code&scope=read&state=#{
             Plug.CSRFProtection.get_csrf_token()
           }",
         class: "button button-large"
