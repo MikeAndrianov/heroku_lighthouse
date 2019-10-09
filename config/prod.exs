@@ -10,7 +10,7 @@ use Mix.Config
 # which you should run after static files are built and
 # before starting your production server.
 config :heroku_lighthouse, HerokuLighthouseWeb.Endpoint,
-  url: [scheme: "https", host: "stormy-ocean-62594.herokuapp.com", port: 443],
+  url: [scheme: "https", host: "www.heroku-lighthouse.com", port: 443],
   force_ssl: [rewrite_on: [:x_forwarded_proto]],
   cache_static_manifest: "priv/static/cache_manifest.json",
   http: [port: {:system, "PORT"}]
