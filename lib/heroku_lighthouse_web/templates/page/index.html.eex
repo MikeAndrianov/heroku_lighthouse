@@ -1,6 +1,9 @@
 <section class="row">
   <article class="column">
-    <h1 class="horizontal-centering"> Heroku Lighthouse </h1>
+    <h1 class="horizontal-centering">
+      <img alt="logo" src="https://img.icons8.com/pastel-glyph/2x/lighthouse.png" class="logo">
+      Heroku Lighthouse
+    </h1>
     <p class="horizontal-centering">Find necessary Heroku application by it's domain or domain by application. Just in one click.</p>
 
     <br>

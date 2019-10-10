@@ -1,0 +1,4 @@
+<h2 class="horizontal-centering"> Account </h1>
+<section class="horizontal-centering">
+    <%= link "Delete account", to: HerokuLighthouseWeb.Router.Helpers.account_path(@conn, :destroy), method: "delete", data: [confirm: "Are you sure?"], class: "button button-outline horizontal-centering" %>
+</section>

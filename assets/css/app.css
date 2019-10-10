@@ -2,6 +2,16 @@
 
 @import "./phoenix.css";
 
+.logo {
+  height: 45px;
+  width: 45px;
+}
+
+.header-icon {
+  height: 32px;
+  width: 32px;
+}
+
 .container {
   max-width: 120rem;
 }
@@ -31,6 +41,7 @@ button, input, optgroup, select, textarea {
 .horizontal-centering {
   display: flex;
   justify-content: center;
+  align-items: center;
 }
 
 /* Tooltip container */

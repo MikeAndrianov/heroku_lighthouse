@@ -18,7 +18,11 @@
               </li>
             </ul>
           </nav>
-          <%= @current_user.email %>
+          <%= link to: HerokuLighthouseWeb.Router.Helpers.dashboard_path(@conn, :index) do %>
+            <img alt="Home" src="https://img.icons8.com/pastel-glyph/2x/lighthouse.png" class="header-icon">
+          <% end %>
+
+          <%= link @current_user.email, to: HerokuLighthouseWeb.Router.Helpers.account_path(@conn, :show) %>
         <% end %>
       </section>
     </header>

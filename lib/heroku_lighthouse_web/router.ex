@@ -27,6 +27,8 @@ defmodule HerokuLighthouseWeb.Router do
 
     delete "/logout", AuthController, :destroy
     get "/dashboard", DashboardController, :index
+    get "/account", AccountController, :show
+    delete "/account", AccountController, :destroy
   end
 
   # Other scopes may use custom stacks.
