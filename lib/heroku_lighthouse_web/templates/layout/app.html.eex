@@ -18,11 +18,13 @@
               </li>
             </ul>
           </nav>
-          <%= link to: HerokuLighthouseWeb.Router.Helpers.dashboard_path(@conn, :index) do %>
-            <img alt="Home" src="https://img.icons8.com/pastel-glyph/2x/lighthouse.png" class="header-icon">
-          <% end %>
+          <div class="horizontal-centering">
+            <%= link @current_user.email, to: HerokuLighthouseWeb.Router.Helpers.account_path(@conn, :show) %>
 
-          <%= link @current_user.email, to: HerokuLighthouseWeb.Router.Helpers.account_path(@conn, :show) %>
+            <%= link to: HerokuLighthouseWeb.Router.Helpers.dashboard_path(@conn, :index) do %>
+              <img alt="Home" src="https://img.icons8.com/pastel-glyph/2x/lighthouse.png" class="header-icon">
+            <% end %>
+          </div>
         <% end %>
       </section>
     </header>
@@ -31,6 +33,16 @@
       <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
       <%= render @view_module, @view_template, assigns %>
     </main>
+    <footer>
+        <section class="container">
+          <div>created by <a href="mailto:mikeandrianov@gmail.com">Mike Andrianov</a> with ❤️</div>
+
+          <div>
+            <small><a href="https://icons8.com/icon/111573/lighthouse">Lighthouse icon by Icons8</a></small>
+          </div>
+        </section>
+      </div>
+    </footer>
     <script type="text/javascript" src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
   </body>
 </html>

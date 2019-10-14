@@ -2,6 +2,44 @@
 
 @import "./phoenix.css";
 
+html,body{
+  height: 100%;
+}
+
+body {
+  display: grid;
+  height: calc(100% - 16px); /* user agent default margin – 8px */
+  grid-template-columns:1fr;
+  grid-template-areas:
+  "nav"
+  "main"
+  "footer";
+  grid-template-rows: auto 1fr auto;
+}
+
+header {
+  grid-area: nav;
+}
+
+main {
+ grid-area: main;
+}
+
+footer {
+  grid-area: footer;
+  background: #fdfdfd;
+  border-top: 1px solid #eaeaea;
+  padding-top: 10px;
+}
+
+footer .container {
+  text-align: center;
+}
+
+.icon_with_email {
+
+}
+
 .logo {
   height: 45px;
   width: 45px;
@@ -10,6 +48,7 @@
 .header-icon {
   height: 32px;
   width: 32px;
+  margin-right: 10px;
 }
 
 .container {
