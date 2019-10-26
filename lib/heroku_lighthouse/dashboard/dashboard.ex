@@ -20,7 +20,8 @@ defmodule HerokuLighthouse.Dashboard do
   def filter_grouped_apps(user, ""), do: cached_grouped_apps(user)
 
   def filter_grouped_apps(user, query) do
-    cached_grouped_apps(user)
+    user
+    |> cached_grouped_apps
     |> Enum.reduce([], fn {team, apps}, acc ->
       [{team, filter_apps(apps, query)} | acc]
     end)
@@ -28,6 +29,8 @@ defmodule HerokuLighthouse.Dashboard do
   end
 
   defp fetch_apps_async(user) do
+    Phoenix.PubSub.broadcast(HerokuLighthouse.PubSub, "dashboard:#{user.id}", :fetching_apps)
+
     # If you are using async tasks, you must await a reply as they are always sent.
     # Use Task.start_link if you are not expecting a reply
     Task.start_link(fn ->
