@@ -1,8 +1,8 @@
 <%= if @fetching_apps do %>
   <h2> Fetching apps...</h2>
 <% else %>
-  <form phx-change="search" phx-debounce="20000" class="search-form">
-    <%= text_input :search_field, :query, placeholder: "Search for application name, web url or custom domain", autofocus: true %>
+  <form phx-change="search" class="search-form">
+    <%= text_input :search_field, :query, "phx-debounce": "300", placeholder: "Search for application name, web url or custom domain", autofocus: true %>
   </form>
 <% end %>
 
