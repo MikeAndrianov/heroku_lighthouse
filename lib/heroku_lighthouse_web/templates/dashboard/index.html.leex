@@ -2,7 +2,7 @@
   <h2> Fetching apps...</h2>
 <% else %>
   <form phx-change="search" class="search-form">
-    <%= text_input :search_field, :query, "phx-debounce": "300", placeholder: "Search for application name, web url or custom domain", autofocus: true %>
+    <%= text_input :search_field, :query, placeholder: "Search for application name, web url or custom domain", autofocus: true %>
   </form>
 <% end %>
 
